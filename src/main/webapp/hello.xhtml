@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jstl/core">
+
+<h:head>
+    <title>eCareTariffs</title>
+</h:head>
+<h:outputScript library="css" name="bootstrap.css" />
+
+<h:body>
+    <h:form>
+        <f:websocket channel="push">
+            <p:ajax event="updateTariffs" update="tariffs" render=":tariffs"/>
+        </f:websocket>
+        <p:dataGrid var="tariff" value="#{tarifBean.tariffs}" columns="1" layout="grid"
+                    rows="6" paginator="true" id="tariffs"
+                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    rowsPerPageTemplate="3,6">
+
+            <f:facet name="header">
+                eCare Tariffs
+            </f:facet>
+
+            <p:panel header="#{tariff.title}" style="text-align:center">
+                <h:panelGrid columns="1" style="width:100%">
+
+                    <h:outputText value="Tariff price: #{tariff.price}" />
+                    <h:outputText value="Available options for this tariff: " />
+
+                    <p:dataTable value="#{tariff.options}" var="option">
+
+                        <p:column headerText="Title">
+                            <h:outputText value="#{option.title}"/>
+                        </p:column>
+
+                        <p:column headerText="Price">
+                            <h:outputText value="#{option.price}"/>
+                        </p:column>
+
+                        <p:column headerText="Cost Of Connection">
+                            <h:outputText value="#{option.costOfConnection}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:panel>
+
+        </p:dataGrid>
+
+    </h:form>
+
+</h:body>
+</html>
